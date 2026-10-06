@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-energia}
+      POSTGRES_USER: ${POSTGRES_USER:-energia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-energia}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - energia-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-energia} -d ${POSTGRES_DB:-energia}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=${POSTGRES_DB:-energia};Username=${POSTGRES_USER:-energia};Password=${POSTGRES_PASSWORD:-energia}
+      Jwt__Key: ${JWT_KEY:-ChaveSuperSecretaParaAssinaturaJWT_TroqueEmProducao_2024_FIAP_ESG_0123456789}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    networks:
+      - energia-net
+
+volumes:
+  pgdata:
+
+networks:
+  energia-net:
+    driver: bridge
