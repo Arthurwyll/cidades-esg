@@ -16,7 +16,7 @@ Pipeline CI/CD com GitHub Actions, containerização com Docker e deploy automat
 | Nargila Soares Mota | RM562956 |
 | Pedro Felippe Colaço De Biazi | RM553309 |
 
-**Repositório:** https://github.com/JennyBarbosa22k/cidades-esg-inteligentes
+**Repositório:** https://github.com/Arthurwyll/cidades-esg
 
 **Ambientes:**
 - Staging: https://esg-staging.onrender.com/swagger
@@ -29,8 +29,8 @@ Pipeline CI/CD com GitHub Actions, containerização com Docker e deploy automat
 Pré-requisitos: Docker e Docker Compose.
 
 ```bash
-git clone https://github.com/JennyBarbosa22k/cidades-esg-inteligentes.git
-cd cidades-esg-inteligentes
+git clone https://github.com/Arthurwyll/cidades-esg.git
+cd cidades-esg
 cp .env.example .env          # ajuste a senha do banco e a chave JWT
 docker compose up -d --build  # sobe API + PostgreSQL
 ```
